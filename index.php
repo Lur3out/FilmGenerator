@@ -13,6 +13,7 @@ if(!isset($_COOKIE['user_id'])) {
 				setcookie('username', $row['username'], time() + (60*60*24*30));
 				$home_url = 'http://' . $_SERVER['HTTP_HOST'];
 				header('Location: '. $home_url);
+		
 			}
 			else {
 				echo 'Извините, вы должны ввести правильные имя пользователя и пароль';
@@ -23,6 +24,17 @@ if(!isset($_COOKIE['user_id'])) {
 		}
 	}
 }
+
+if(isset($_POST['generate'])) {
+	$query = "SELECT `name` FROM `films` ORDER BY RAND() LIMIT 1";
+	$result = mysqli_query($dbc,$query);
+	$row = mysqli_fetch_row($result);
+	echo "<tr>";
+    echo "<td>$row[0]</td>";
+    echo "</tr>";
+}
+
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -34,9 +46,7 @@ if(!isset($_COOKIE['user_id'])) {
 <header>
 <h1>Генератор фильмов</h1>
 </header>
-<content>
-	
-</content>
+
 <section>
 <?php
 	if(empty($_COOKIE['username'])) {
@@ -53,6 +63,10 @@ if(!isset($_COOKIE['user_id'])) {
 }
 else {
 	?>
+	<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
+	
+		<button type="submit" name="generate">Сгенерировать</button>
+	</form>
 	<p><a href="exit.php">Выйти(<?php echo $_COOKIE['username']; ?>)</a></p>
 <?php	
 }
