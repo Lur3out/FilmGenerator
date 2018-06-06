@@ -11,11 +11,8 @@
 <body>
 
     <header>
-
-        <a href="main.html" title="На главную">Генератор фильмов</a>
-
-
-
+        <h1>Генератор фильмов</h1>
+        <a href="/signup.php">Регистрация</a>
     </header>
 </body>
 </html>
