@@ -40,7 +40,7 @@ if(isset($_POST['submit'])){
     		background: #b5f38b;
     		font-size: 1em;
     		font-family: "Segoe UI", sans-serif;
-    		line-height: 135%;
+    	line-height: 135%;
 		}
 	
 	</style>
