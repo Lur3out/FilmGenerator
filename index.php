@@ -34,6 +34,36 @@ if(isset($_POST['generate'])) {
     echo "</tr>";
 }
 
+if(isset($_POST['parse'])) {
+	function curl($url)
+	{
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_AUTOREFERER, true);
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($ch, CURLOPT_USERAGENT, 'User-Agent:Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36');    
+		curl_setopt($ch, CURLOPT_HEADER, true);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
+			
+		$return         = curl_exec($ch);
+		$curl_info      = curl_getinfo($ch);
+		$header_size    = $curl_info['header_size'];
+		$headers        = mb_substr($return, 0, $header_size);
+		$headers        = explode("\r\n", $headers);
+		$headers        = array_filter($headers);
+		$body           = mb_substr($return, $header_size); 
+		curl_close($ch);
+		return array(
+			'headers'   => $headers,
+			'body'      => $body,
+		);
+	} 
+	 
+	$response = curl("https://www.ivi.ru/search/?q=фильмы+на+вечер");
+	echo $response['body'];
+}
+
 
 ?>
 <!DOCTYPE html>
@@ -41,10 +71,11 @@ if(isset($_POST['generate'])) {
 <head>
 <meta charset="utf-8">
 <link href="css/style.css" rel="stylesheet">
+<link href="icon/favicon.ico" rel="shortcut icon" type="image/x-icon" />
 </head>
 <body>
 <header>
-<h1>Генератор фильмов</h1>
+<a href="/"><h1>Генератор фильмов</h1></a>
 </header>
 
 <section>
@@ -66,6 +97,10 @@ else {
 	<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
 	
 		<button type="submit" name="generate">Сгенерировать</button>
+	</form>
+	<form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
+	
+		<button type="submit" name="parse">Спарсить</button>
 	</form>
 	<p><a href="exit.php">Выйти(<?php echo $_COOKIE['username']; ?>)</a></p>
 <?php	

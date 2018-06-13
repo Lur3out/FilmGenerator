@@ -45,7 +45,7 @@ if(isset($_POST['submit'])){
 	
 	</style>
 <header>
-        <h1>Генератор фильмов</h1>
+        <a href="/"><h1>Генератор фильмов</h1></a>
 </header>
 <content>
 	<form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
